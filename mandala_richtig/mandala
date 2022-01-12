@@ -1,0 +1,117 @@
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+# Zu erst programmiere ich die inneren Kreise, deren Anzahl und Farbe variiert werden kann. Dazu definiere ich als erstes einen einfachen Kreis:
+def kreis(umfang, farbe):
+    setPenColor(farbe)
+    repeat 360:
+        right(1)
+        fd(umfang/360)
+
+
+# Danach definiere ich einen der 4 kleinen Kreise, indem ich das Programm, welches einen Kreis zeichnet in eine repeat-Schleife schreibe. Dazu kommt der Weg vom 
+# Mittelpunkt des Kreises zu der "äusseren Linie" und zurück, welchen die Turtle zurücklegen muss um an die Kreise richtig zu plazieren
+# (dieser Weg soll natürlich nicht sichtbar sein, d.h. penUp()). Am Ende der repeat-Schleife wird der Umfang des nächsten Kreises verkleinert. 
+# (Farbe und Anzahl der Kreise können durch den imput weiter unten am Ende selber eingegeben werden.)
+def kreise(umfang):
+    repeat anzahl:
+        penUp()
+        left(90)
+        fd(umfang/3.14/2)
+        right(90)
+        penDown()
+        kreis(umfang, farbe)
+        penUp()
+        right(90)
+        fd(umfang/3.14/2)
+        left(90)
+        penDown()
+        
+        umfang = umfang / 1.2      
+
+# Nun programmiere ich die 4 "Doppelblätter" im Inneren des Mandalas. Dazu definiere ich zu erst ein normales Blatt, danach ein Doppelblatt indem ich in das normale ein 
+# kleineres hinein programmiere und einen Kreis (vorher programmiert) einsetze. Als letztes setze ich 4 dieser Blätter jeweils in einem 90-Grad Winkel verschoben zusammen.
+def blatt(groesse):
+    setPenColor("purple")
+    left(45)
+    repeat 90:
+        forward(groesse)
+        right(1)
+    right(90)
+    repeat 90:
+        forward(groesse)
+        right(1)   
+    right(90)
+    right(45)
+    setPenColor("blue")
+    
+    
+def doppelblatt(groesse):
+    blatt(groesse)
+    blatt(groesse/1.2)
+    penUp()
+    fd(groesse *  30)
+    penDown()
+    left(90)
+    kreise(200)
+    right(90)
+    penUp()
+    back(groesse * 30)
+    penDown()
+    setPenColor("blue")
+    
+def vierblaetter(groesse):
+    repeat 4:
+        doppelblatt(groesse)
+        right(90)
+
+# Jetzt definiere ich den Äusseren Teil des Mandalas, d.h. den äussersten Kreis mit den 40 kleinen Kreisen. Ich nehme einen einfachen Kreis und programmiere,
+# dass nachdem immer 1/40 des Kreises, d.h. 9 Pixel des Kreises gezeichnet wurden, die Turtle rechts um die Hälfte des Abstandes des äussersten und zweitäussersten 
+# Kreises in Richtung des Kreismittelpunktes geht, sich richtig positioniert und einen kleinen Kreis zeichnet. Danach geht sie wieder zurück (Den Weg zur richtigen 
+# Anfangsposition des Kreises soll man nicht sehen, d.h. wieder penUp()).
+def kreis2():
+    repeat 40:
+        repeat 9:
+            right(1)
+            fd(1819/360)
+        right(90)
+        penUp()
+        fd(20)
+        penDown()
+        left(180)
+        kreis(80, "purple")
+        penUp()
+        fd(20)
+        right(90)
+        penDown()
+        setPenColor("blue")
+                
+        
+# Hier kommt der input um später Farbe und Anzahl der inneren Kreise zu bestimmen:
+farbe = input ("Farbe der Kreise?")
+anzahl = input ("Wie viele Kreise?") 
+
+# Nun werden die 4 Blätter und die 2 Kreise, die diese umranden, zusammengesetzt.
+vierblaetter(3)
+left(90)
+penUp()
+fd(243)
+penDown()
+right(90)
+fd(2)
+kreis(1530, "blue")
+left(90)
+penUp()
+fd(6)
+penDown()
+right(90)
+kreis(1567, "blue")
+
+# Als letztes kommt der äussere Kreis mit den 40 kleinen dazu.
+penUp()
+left(90)
+fd(40)
+right(90)
+penDown()
+kreis2()
